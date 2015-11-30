@@ -131,20 +131,20 @@ if __name__ == "__main__":
     plot.plot_classification_report(confusion_matrix_gbc)
 
     #TODO: plot classification report
-    # classification_report = metrics.classification_report(expected_gnb, predicted_gnb)
-    # print classification_report
+    classification_report = metrics.classification_report(expected_gnb, predicted_gnb)
+    print classification_report
 
 
 
-    # print "RandomForestClassifier:"
-    # print "%.3f" % accuracy(_y_all, run_cross_validation(_x_all, _y_all, rfc))
-    # print "%.3f" % accuracy(_y_all, run_cross_validation(normalized_x, _y_all, rfc))
-    # print "%.3f" % accuracy(_y_all, run_cross_validation(standardized_x, _y_all, rfc))
-    # print "GaussianNB:"
-    # print "%.3f" % accuracy(_y_all, run_cross_validation(_x_all, _y_all, gnb))
-    # print "%.3f" % accuracy(_y_all, run_cross_validation(normalized_x, _y_all, gnb))
-    # print "%.3f" % accuracy(_y_all, run_cross_validation(standardized_x, _y_all, gnb))
-    # print "GradientBoostingClassifier:"
-    # print "%.3f" % accuracy(_y_all, run_cross_validation(_x_all, _y_all, gbc))
-    # print "%.3f" % accuracy(_y_all, run_cross_validation(normalized_x, _y_all, gbc))
-    # print "%.3f" % accuracy(_y_all, run_cross_validation(standardized_x, _y_all, gbc))
+    print "RandomForestClassifier:"
+    print "%.3f" % accuracy(_y_all, run_cross_validation(_x_all, _y_all, rfc))
+    print "%.3f" % accuracy(_y_all, run_cross_validation(normalized_x, _y_all, rfc))
+    print "%.3f" % accuracy(_y_all, run_cross_validation(standardized_x, _y_all, rfc))
+    print "GaussianNB:"
+    print "%.3f" % accuracy(_y_all, run_cross_validation(_x_all, _y_all, gnb))
+    print "%.3f" % accuracy(_y_all, run_cross_validation(normalized_x, _y_all, gnb))
+    print "%.3f" % accuracy(_y_all, run_cross_validation(standardized_x, _y_all, gnb))
+    print "GradientBoostingClassifier:"
+    print "%.3f" % accuracy(_y_all, run_cross_validation(_x_all, _y_all, gbc))
+    print "%.3f" % accuracy(_y_all, run_cross_validation(normalized_x, _y_all, gbc))
+    print "%.3f" % accuracy(_y_all, run_cross_validation(standardized_x, _y_all, gbc))
