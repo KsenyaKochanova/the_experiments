@@ -112,6 +112,7 @@ if __name__ == "__main__":
     confusion_matrix_gbc = metrics.confusion_matrix(expected_gbc, predicted_gbc)
     plot.plot_classification_report(confusion_matrix_gbc)
 
+<<<<<<< HEAD
     # TODO: plot classification report
     # classification_report = metrics.classification_report(expected_gnb, predicted_gnb)
     # print classification_report
@@ -122,3 +123,23 @@ if __name__ == "__main__":
     print "%.3f" % accuracy(_y_all, run_cross_validation(_x_all, _y_all, bnb))
     print "GradientBoostingClassifier:"
     print "%.3f" % accuracy(_y_all, run_cross_validation(_x_all, _y_all, gbc))
+=======
+    #TODO: plot classification report
+    classification_report = metrics.classification_report(expected_gnb, predicted_gnb)
+    print classification_report
+
+
+
+    print "RandomForestClassifier:"
+    print "%.3f" % accuracy(_y_all, run_cross_validation(_x_all, _y_all, rfc))
+    print "%.3f" % accuracy(_y_all, run_cross_validation(normalized_x, _y_all, rfc))
+    print "%.3f" % accuracy(_y_all, run_cross_validation(standardized_x, _y_all, rfc))
+    print "GaussianNB:"
+    print "%.3f" % accuracy(_y_all, run_cross_validation(_x_all, _y_all, gnb))
+    print "%.3f" % accuracy(_y_all, run_cross_validation(normalized_x, _y_all, gnb))
+    print "%.3f" % accuracy(_y_all, run_cross_validation(standardized_x, _y_all, gnb))
+    print "GradientBoostingClassifier:"
+    print "%.3f" % accuracy(_y_all, run_cross_validation(_x_all, _y_all, gbc))
+    print "%.3f" % accuracy(_y_all, run_cross_validation(normalized_x, _y_all, gbc))
+    print "%.3f" % accuracy(_y_all, run_cross_validation(standardized_x, _y_all, gbc))
+>>>>>>> e24aaa14ed20e8094d961064772d5e8a0bb652a0
