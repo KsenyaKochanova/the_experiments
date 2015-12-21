@@ -49,3 +49,12 @@ def plot_classification_report_for_each_method(cr, title, with_avg_total=False, 
     plt.ylabel('Classes')
     plt.xlabel('Measures')
     plt.show()
+
+def plot_diff_num_tree(n_estimators, accuracy_score_rfc, accuracy_score_gbc):
+    pl.title("Dependence the method's accuracy of the value of n_estimators")
+    pl.xlabel("n_estimators")
+    pl.ylabel("accuracy_score")
+    plt.plot(n_estimators, accuracy_score_rfc, label="RandomForestClassifier")
+    plt.plot(n_estimators, accuracy_score_gbc, label="GradientBoostingClassifier")
+    pl.legend(loc="lower right")
+    pl.show()
