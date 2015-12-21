@@ -4,6 +4,7 @@ from sklearn.preprocessing import StandardScaler
 from sklearn.ensemble import RandomForestClassifier as rfc
 from sklearn.ensemble import GradientBoostingClassifier as gbc
 from sklearn.naive_bayes import BernoulliNB as bnb
+from sklearn.naive_bayes import MultinomialNB as mnb
 from sklearn.cross_validation import KFold
 import plot
 
@@ -39,17 +40,23 @@ def prepare_matrix_for_feature_engineering(matrix_from_file):
 #     return expected, predicted
 
 
-def naive_bayes(x_train, y_train, x_test, y_test):
+def naive_bayes_bnb(x_train, y_train, x_test, y_test):
     model = bnb()
     model.fit(x_train, y_train)
     expected = y_test
     predicted = model.predict(x_test)
     return expected, predicted
 
+def naive_bayes_mnb(x_train, y_train, x_test, y_test):
+    model = mnb()
+    model.fit(x_train, y_train)
+    expected = y_test
+    predicted = model.predict(x_test)
+    return expected, predicted
 
 def random_forest_classifier(x_train, y_train, x_test, y_test):
-    model = rfc(n_estimators=10, criterion='gini', max_depth=None, min_samples_split=2, min_samples_leaf=1,
-                min_weight_fraction_leaf=0.0, max_features='auto', max_leaf_nodes=None, bootstrap=True,
+    model = rfc(n_estimators=1000, criterion='gini', max_depth=None, min_samples_split=2, min_samples_leaf=1,
+                min_weight_fraction_leaf=0.0, max_features="auto", max_leaf_nodes=None, bootstrap=False,
                 oob_score=False, n_jobs=1, random_state=None, verbose=0, warm_start=False, class_weight=None)
     model.fit(x_train, y_train)
     predicted = model.predict(x_test)
@@ -68,8 +75,8 @@ def random_forest_classifier(x_train, y_train, x_test, y_test):
 
 
 def gradient_boosting_classifier(x_train, y_train, x_test, y_test):
-    model = gbc(loss='deviance', learning_rate=0.1, n_estimators=10, subsample=1.0, min_samples_split=2,
-                min_samples_leaf=1, min_weight_fraction_leaf=0.0, max_depth=1, init=None, random_state=None,
+    model = gbc(loss='deviance', learning_rate=0.2, n_estimators=10, subsample=1.0, min_samples_split=2,
+                min_samples_leaf=10, min_weight_fraction_leaf=0.0, max_depth=5, init=None, random_state=None,
                 max_features=None, verbose=0, max_leaf_nodes=None, warm_start=False)
     model.fit(x_train, y_train)
     expected = y_test
@@ -101,18 +108,19 @@ if __name__ == "__main__":
     scaler = StandardScaler()
     _x_all = scaler.fit_transform(_x_all)
 
-    expected_bnb, predicted_bnb = naive_bayes(_x_train, _y_train, _x_test, _y_test)
+    expected_bnb, predicted_bnb = naive_bayes_bnb(_x_train, _y_train, _x_test, _y_test)
+    expected_mnb, predicted_mnb = naive_bayes_mnb(_x_train, _y_train, _x_test, _y_test)
     expected_rfc, predicted_rfc = random_forest_classifier(_x_train, _y_train, _x_test, _y_test)
     expected_gbc, predicted_gbc = gradient_boosting_classifier(_x_train, _y_train, _x_test, _y_test)
 
-    confusion_matrix_gnb = metrics.confusion_matrix(expected_bnb, predicted_bnb)
-    plot.plot_classification_report(confusion_matrix_gnb)
-    confusion_matrix_frc = metrics.confusion_matrix(expected_rfc, predicted_rfc)
-    plot.plot_classification_report(confusion_matrix_frc)
-    confusion_matrix_gbc = metrics.confusion_matrix(expected_gbc, predicted_gbc)
-    plot.plot_classification_report(confusion_matrix_gbc)
+    # confusion_matrix_gnb = metrics.confusion_matrix(expected_bnb, predicted_bnb)
+    # plot.plot_classification_report(confusion_matrix_gnb)
+    # confusion_matrix_frc = metrics.confusion_matrix(expected_rfc, predicted_rfc)
+    # plot.plot_classification_report(confusion_matrix_frc)
+    # confusion_matrix_gbc = metrics.confusion_matrix(expected_gbc, predicted_gbc)
+    # plot.plot_classification_report(confusion_matrix_gbc)
 
-<<<<<<< HEAD
+
     # TODO: plot classification report
     # classification_report = metrics.classification_report(expected_gnb, predicted_gnb)
     # print classification_report
@@ -123,23 +131,40 @@ if __name__ == "__main__":
     print "%.3f" % accuracy(_y_all, run_cross_validation(_x_all, _y_all, bnb))
     print "GradientBoostingClassifier:"
     print "%.3f" % accuracy(_y_all, run_cross_validation(_x_all, _y_all, gbc))
-=======
-    #TODO: plot classification report
-    classification_report = metrics.classification_report(expected_gnb, predicted_gnb)
+
+    print "bnb"
+    classification_report = metrics.classification_report(expected_bnb, predicted_bnb)
     print classification_report
+    plot.plot_classification_report_for_each_method(classification_report,'Classification report for BernoulliNB')
+
+    print "mnb"
+    classification_report = metrics.classification_report(expected_mnb, predicted_mnb)
+    print classification_report
+    plot.plot_classification_report_for_each_method(classification_report,'Classification report for MultinomialNB')
+
+    print "rfc"
+    classification_report = metrics.classification_report(expected_rfc, predicted_rfc)
+    print classification_report
+    plot.plot_classification_report_for_each_method(classification_report,'Classification report for RandomForestClassifier')
+
+
+    print "gbc"
+    classification_report = metrics.classification_report(expected_gbc, predicted_gbc)
+    print classification_report
+    plot.plot_classification_report_for_each_method(classification_report,'Classification report for GradientBoostingClassifier')
 
 
 
     print "RandomForestClassifier:"
     print "%.3f" % accuracy(_y_all, run_cross_validation(_x_all, _y_all, rfc))
-    print "%.3f" % accuracy(_y_all, run_cross_validation(normalized_x, _y_all, rfc))
-    print "%.3f" % accuracy(_y_all, run_cross_validation(standardized_x, _y_all, rfc))
+    # print "%.3f" % accuracy(_y_all, run_cross_validation(normalized_x, _y_all, rfc))
+    # print "%.3f" % accuracy(_y_all, run_cross_validation(standardized_x, _y_all, rfc))
     print "GaussianNB:"
-    print "%.3f" % accuracy(_y_all, run_cross_validation(_x_all, _y_all, gnb))
-    print "%.3f" % accuracy(_y_all, run_cross_validation(normalized_x, _y_all, gnb))
-    print "%.3f" % accuracy(_y_all, run_cross_validation(standardized_x, _y_all, gnb))
+    print "%.3f" % accuracy(_y_all, run_cross_validation(_x_all, _y_all, bnb))
+    # print "%.3f" % accuracy(_y_all, run_cross_validation(normalized_x, _y_all, gnb))
+    # print "%.3f" % accuracy(_y_all, run_cross_validation(standardized_x, _y_all, gnb))
     print "GradientBoostingClassifier:"
     print "%.3f" % accuracy(_y_all, run_cross_validation(_x_all, _y_all, gbc))
-    print "%.3f" % accuracy(_y_all, run_cross_validation(normalized_x, _y_all, gbc))
-    print "%.3f" % accuracy(_y_all, run_cross_validation(standardized_x, _y_all, gbc))
->>>>>>> e24aaa14ed20e8094d961064772d5e8a0bb652a0
+    # print "%.3f" % accuracy(_y_all, run_cross_validation(normalized_x, _y_all, gbc))
+    # print "%.3f" % accuracy(_y_all, run_cross_validation(standardized_x, _y_all, gbc))
+
